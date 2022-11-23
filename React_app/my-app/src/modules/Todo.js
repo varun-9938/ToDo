@@ -24,24 +24,22 @@ const Todo = () => {
       })
     }
 
+  
     function saveTask(){
       console.warn({Body});
       let data = {Body}
-      fetch("/todo",{
-        method:'POST',
-        headers:{
-          'accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(data)
+      axios.post("/todo",{
+        body:data.Body
+        
       }).then((result)=>{
         //console.warn("result",result);
         result.json().then((resp)=>{
           console.warn("resp",resp)
         })
       })
-      
+     
     }
+
     console.log(TaskObj)
     return (
         <div className="App">
@@ -63,7 +61,7 @@ const Todo = () => {
           })}
           </table>
           <button onClick={onClickShowAll}>show all todo</button><br />
-          <input type="json" value={Body} onChange={(e)=>{setBody(e.target.value)}} name="Body"/><br/>
+          <h4>Enter new task</h4><input type="json" value={Body} onChange={(e)=>{setBody(e.target.value)}} name="Body"/>
           <button type="button" onClick={saveTask}>save task</button>
         </div>
         
