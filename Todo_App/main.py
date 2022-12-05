@@ -39,10 +39,16 @@ def destroy(id,db:Session=Depends(get_db)):
 
 
 @app.put('/todo/{id}')
-def update(id,request: Schema.Task, db:Session=Depends(get_db)):
-    db.query(Model.Task).filter(Model.Task.id == id).update(request)
-    db.commit()
-    return 'updated'
+def update(id:int,request:Schema.Task, db:Session=Depends(get_db)):
+    try:
+        t=db.query(Model.Task).filter(Model.Task.id == id).first()
+        t.body=request.body
+        db.add(t)
+        db.commit()
+        return request
+    except:
+        return HTTPException(status_code=404,detail="task not found")
+        
 
 
 @app.get('/todo')
